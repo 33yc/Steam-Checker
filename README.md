@@ -57,7 +57,7 @@
 
 If you don't want to build the project yourself, you can download the pre-built version directly from GitHub:
 
-1. Go to the **[Releases page](https://github.com/heroin1337/Steam-Checker/releases)**.
+1. Go to the **[Releases page](https://github.com/heroin1337/Steam-Checker/releases/tag/)**.
 
 2. Download the latest release for your platform.
 
