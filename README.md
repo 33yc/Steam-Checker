@@ -44,7 +44,7 @@
    ```bash
    git clone https://github.com/heroin1337/Steam-Checker.git
 
-2. **Open the `SteamChecker.sln` file** in Visual Studio.
+2. **Open the `AccountChecker.csproj` file** in Visual Studio.
 
 3. **Build and run the project**.
 
