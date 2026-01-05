@@ -1,0 +1,522 @@
+﻿<Window x:Class="AccountChecker.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:AccountChecker"
+        mc:Ignorable="d"
+        Title="Account Checker" 
+        Height="800" 
+        Width="1400"
+        Background="Transparent"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        ResizeMode="CanResize"
+        WindowStartupLocation="CenterScreen">
+    
+    <Window.Resources>
+        <!-- Fade In Animation for Content -->
+        <Storyboard x:Key="FadeInAnimation">
+            <DoubleAnimation 
+                Storyboard.TargetProperty="Opacity"
+                From="0" To="1" 
+                Duration="0:0:0.5">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation 
+                Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                From="20" To="0" 
+                Duration="0:0:0.5">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
+    </Window.Resources>
+    
+    <Border Background="{StaticResource PrimaryBackground}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="24">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="60"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Title Bar -->
+            <Border Grid.Row="0" 
+                    Background="{StaticResource SecondaryBackground}" 
+                    CornerRadius="24,24,0,0"
+                    MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="25,0">
+                        <Border Width="12" Height="12" 
+                                Background="#FFFFFF"
+                                CornerRadius="6"
+                                Margin="0,0,12,0">
+                            <Border.Effect>
+                                <DropShadowEffect Color="#FFFFFF" BlurRadius="10" ShadowDepth="0" Opacity="0.6"/>
+                            </Border.Effect>
+                        </Border>
+                        <TextBlock Text="ACCOUNT CHECKER" 
+                                   Foreground="{StaticResource TextPrimary}" 
+                                   FontSize="14" 
+                                   FontWeight="Bold"
+                                   VerticalAlignment="Center"/>
+                    </StackPanel>
+                    
+                    <!-- Window Controls -->
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" Margin="0,0,20,0">
+                        <Button Content="—" 
+                                Width="40" Height="40" 
+                                Click="MinimizeButton_Click"
+                                BorderThickness="0"
+                                Background="Transparent"
+                                Foreground="{StaticResource TextPrimary}"
+                                FontSize="16"
+                                Cursor="Hand"
+                                Margin="8,0">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                        <Button Content="✕" 
+                                Width="40" Height="40" 
+                                Click="CloseButton_Click"
+                                BorderThickness="0"
+                                Background="Transparent"
+                                Foreground="{StaticResource TextPrimary}"
+                                FontSize="16"
+                                Cursor="Hand"
+                                Margin="8,0">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}">
+                                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </Button.Style>
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            
+            <!-- Main Content -->
+            <Grid Grid.Row="1" Margin="30,20,30,30">
+                <TabControl Style="{StaticResource ModernTabControl}" 
+                            x:Name="MainTabControl"
+                            SelectionChanged="TabControl_SelectionChanged">
+                    
+                    <!-- Steam Checker Tab -->
+                    <TabItem Header="Steam Checker" Style="{StaticResource ModernTabItem}">
+                        <Grid x:Name="SteamCheckerContent" 
+                              Opacity="0"
+                              RenderTransformOrigin="0.5,0.5">
+                            <Grid.RenderTransform>
+                                <TranslateTransform Y="20"/>
+                            </Grid.RenderTransform>
+                            
+                            <Grid Margin="0,20">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*"/>
+                                    <ColumnDefinition Width="20"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+                                
+                                <!-- Left Panel - Input & Controls -->
+                                <Border Grid.Column="0" Style="{StaticResource ModernCard}">
+                                    <StackPanel>
+                                        <TextBlock Text="Steam Account Checker" 
+                                                   FontSize="24" 
+                                                   FontWeight="Bold" 
+                                                   Foreground="{StaticResource TextPrimary}"
+                                                   Margin="0,0,0,25"/>
+                                        
+                                        <!-- Stats Cards -->
+                                        <Grid Margin="0,0,0,15">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="10"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="10"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <Border Grid.Column="0" Background="{StaticResource SecondaryBackground}" 
+                                                    CornerRadius="12" Padding="15">
+                                                <StackPanel>
+                                                    <TextBlock Text="VALID" 
+                                                               FontSize="10" 
+                                                               Foreground="{StaticResource TextSecondary}"/>
+                                                    <TextBlock x:Name="ValidCount"
+                                                               Text="0" 
+                                                               FontSize="28" 
+                                                               FontWeight="Bold" 
+                                                               Foreground="#4CAF50"
+                                                               Margin="0,5,0,0"/>
+                                                </StackPanel>
+                                            </Border>
+                                            
+                                            <Border Grid.Column="2" Background="{StaticResource SecondaryBackground}" 
+                                                    CornerRadius="12" Padding="15">
+                                                <StackPanel>
+                                                    <TextBlock Text="INVALID" 
+                                                               FontSize="10" 
+                                                               Foreground="{StaticResource TextSecondary}"/>
+                                                    <TextBlock x:Name="InvalidCount"
+                                                               Text="0" 
+                                                               FontSize="28" 
+                                                               FontWeight="Bold" 
+                                                               Foreground="#F44336"
+                                                               Margin="0,5,0,0"/>
+                                                </StackPanel>
+                                            </Border>
+                                            
+                                            <Border Grid.Column="4" Background="{StaticResource SecondaryBackground}" 
+                                                    CornerRadius="12" Padding="15">
+                                                <StackPanel>
+                                                    <TextBlock Text="MFA" 
+                                                               FontSize="10" 
+                                                               Foreground="{StaticResource TextSecondary}"/>
+                                                    <TextBlock x:Name="MfaCount"
+                                                               Text="0" 
+                                                               FontSize="28" 
+                                                               FontWeight="Bold" 
+                                                               Foreground="#FFC107"
+                                                               Margin="0,5,0,0"/>
+                                                </StackPanel>
+                                            </Border>
+                                        </Grid>
+                                        
+                                        <Border Background="{StaticResource SecondaryBackground}" 
+                                                CornerRadius="12" Padding="15" Margin="0,0,0,15">
+                                            <StackPanel>
+                                                <TextBlock Text="CHECKED" 
+                                                           FontSize="10" 
+                                                           Foreground="{StaticResource TextSecondary}"/>
+                                                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                                                    <TextBlock x:Name="CheckedCount"
+                                                               Text="0" 
+                                                               FontSize="28" 
+                                                               FontWeight="Bold" 
+                                                               Foreground="{StaticResource TextPrimary}"/>
+                                                    <TextBlock Text=" / " 
+                                                               FontSize="28" 
+                                                               Foreground="{StaticResource TextSecondary}"/>
+                                                    <TextBlock x:Name="TotalCount"
+                                                               Text="0" 
+                                                               FontSize="28" 
+                                                               FontWeight="Bold" 
+                                                               Foreground="{StaticResource TextSecondary}"/>
+                                                </StackPanel>
+                                            </StackPanel>
+                                        </Border>
+                                        
+                                        <!-- Combo File Input -->
+                                        <TextBlock Text="Combo File (user:pass)" 
+                                                   FontSize="12" 
+                                                   Foreground="{StaticResource TextSecondary}"
+                                                   Margin="0,10,0,8"/>
+                                        <Grid Margin="0,0,0,20">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="10"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <TextBox x:Name="ComboFileTextBox"
+                                                     Grid.Column="0"
+                                                     Background="{StaticResource SecondaryBackground}"
+                                                     Foreground="{StaticResource TextPrimary}"
+                                                     BorderBrush="{StaticResource BorderBrush}"
+                                                     BorderThickness="1"
+                                                     Padding="12"
+                                                     FontSize="13"
+                                                     IsReadOnly="True"
+                                                     VerticalContentAlignment="Center"/>
+                                            
+                                            <Button Grid.Column="2"
+                                                    Content="Browse"
+                                                    Click="BrowseComboFile_Click"
+                                                    Style="{StaticResource ModernButton}"
+                                                    Padding="20,10"/>
+                                        </Grid>
+                                        
+                                        <!-- Threads -->
+                                        <TextBlock Text="Threads" 
+                                                   FontSize="12" 
+                                                   Foreground="{StaticResource TextSecondary}"
+                                                   Margin="0,0,0,8"/>
+                                        <TextBox x:Name="ThreadsTextBox"
+                                                 Text="10"
+                                                 Background="{StaticResource SecondaryBackground}"
+                                                 Foreground="{StaticResource TextPrimary}"
+                                                 BorderBrush="{StaticResource BorderBrush}"
+                                                 BorderThickness="1"
+                                                 Padding="12"
+                                                 FontSize="13"
+                                                 Margin="0,0,0,20"/>
+                                        
+                                        <!-- Control Buttons -->
+                                        <Grid Margin="0,10,0,5">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="10"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="10"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            
+                                            <Button x:Name="StartStopButton"
+                                                    Grid.Row="0"
+                                                    Grid.Column="0"
+                                                    Grid.ColumnSpan="3"
+                                                    Content="START"
+                                                    Click="StartStopButton_Click"
+                                                    Style="{StaticResource ModernButton}"
+                                                    Padding="0,16"
+                                                    FontSize="14"
+                                                    FontWeight="Bold"/>
+                                            
+                                            <Button x:Name="StopButton"
+                                                    Grid.Row="2"
+                                                    Grid.Column="0"
+                                                    Content="STOP"
+                                                    Click="StopButton_Click"
+                                                    Style="{StaticResource ModernButton}"
+                                                    Padding="0,12"
+                                                    FontSize="12"
+                                                    FontWeight="Bold"
+                                                    IsEnabled="False"
+                                                    Background="#F44336"/>
+                                            
+                                            <Button x:Name="ExportButton"
+                                                    Grid.Row="2"
+                                                    Grid.Column="2"
+                                                    Content="EXPORT"
+                                                    Click="ExportResults_Click"
+                                                    Style="{StaticResource ModernButton}"
+                                                    Padding="0,12"
+                                                    FontSize="12"
+                                                    FontWeight="Bold"/>
+                                        </Grid>
+                                        
+                                        <!-- Status Text -->
+                                        <TextBlock x:Name="StatusTextBlock"
+                                                   Text=""
+                                                   FontSize="11"
+                                                   Foreground="{StaticResource TextSecondary}"
+                                                   TextAlignment="Center"
+                                                   Margin="0,0,0,5"
+                                                   TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </Border>
+                            
+                            <!-- Right Panel - Results -->
+                            <Border Grid.Column="2" Style="{StaticResource ModernCard}">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <StackPanel Grid.Row="0" Margin="0,0,0,20">
+                                        <TextBlock Text="Results" 
+                                                   FontSize="24" 
+                                                   FontWeight="Bold" 
+                                                       Foreground="{StaticResource TextPrimary}"/>
+                                        </StackPanel>
+                                        
+                                        <ScrollViewer Grid.Row="1" 
+                                                      Style="{StaticResource ModernScrollViewer}"
+                                                      VerticalScrollBarVisibility="Auto">
+                                            <ListBox x:Name="ResultsListBox"
+                                                     Background="Transparent"
+                                                     BorderThickness="0"
+                                                     Foreground="{StaticResource TextPrimary}"
+                                                     FontFamily="Consolas"
+                                                     FontSize="12">
+                                                <ListBox.ItemContainerStyle>
+                                                    <Style TargetType="ListBoxItem">
+                                                        <Setter Property="Background" Value="Transparent"/>
+                                                        <Setter Property="BorderThickness" Value="0"/>
+                                                        <Setter Property="Padding" Value="10,8"/>
+                                                        <Setter Property="Margin" Value="0,0,0,2"/>
+                                                    </Style>
+                                                </ListBox.ItemContainerStyle>
+                                            </ListBox>
+                                        </ScrollViewer>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </Grid>
+                    </TabItem>  
+                    
+                    <!-- Settings Tab -->
+                    <TabItem Header="Settings" Style="{StaticResource ModernTabItem}">
+                        <Grid x:Name="SettingsContent" 
+                              Opacity="0"
+                              RenderTransformOrigin="0.5,0.5">
+                            <Grid.RenderTransform>
+                                <TranslateTransform Y="20"/>
+                            </Grid.RenderTransform>
+                            
+                            <ScrollViewer Style="{StaticResource ModernScrollViewer}" VerticalScrollBarVisibility="Auto">
+                                <StackPanel Margin="0,20">
+                                    <Border Style="{StaticResource ModernCard}" Margin="0,0,0,25">
+                                        <StackPanel>
+                                            <TextBlock Text="⚙️ Settings" 
+                                                       FontSize="28" 
+                                                       FontWeight="Bold" 
+                                                       Foreground="{StaticResource TextPrimary}"
+                                                       Margin="0,0,0,20"/>
+                                            <TextBlock Text="Configure your account checker settings" 
+                                                       FontSize="14" 
+                                                       Foreground="{StaticResource TextSecondary}"/>
+                                        </StackPanel>
+                                    </Border>
+                                    
+                                    <!-- Proxy Settings -->
+                                    <Border Style="{StaticResource ModernCard}">
+                                        <StackPanel>
+                                            <TextBlock Text="Proxy Settings" 
+                                                       FontSize="20" 
+                                                       FontWeight="Bold" 
+                                                       Foreground="{StaticResource TextPrimary}"
+                                                       Margin="0,0,0,20"/>
+                                            
+                                            <CheckBox x:Name="ProxylessCheckBox" 
+                                                      Content="Use Proxyless Mode" 
+                                                      Foreground="{StaticResource TextPrimary}"
+                                                      FontSize="14"
+                                                      IsChecked="True"
+                                                      Checked="ProxylessCheckBox_Changed"
+                                                      Unchecked="ProxylessCheckBox_Changed"
+                                                      Margin="0,0,0,20"/>
+                                            
+                                            <TextBlock x:Name="ProxyFileLabel"
+                                                       Text="Proxy File (ip:port or ip:port:user:pass)" 
+                                                       FontSize="12" 
+                                                       Foreground="{StaticResource TextSecondary}"
+                                                       Margin="0,0,0,8"
+                                                       IsEnabled="False"/>
+                                            
+                                            <Grid Margin="0,0,0,15">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="10"/>
+                                                    <ColumnDefinition Width="Auto"/>
+                                                </Grid.ColumnDefinitions>
+                                                
+                                                <TextBox x:Name="ProxyFileTextBox"
+                                                         Grid.Column="0"
+                                                         Background="{StaticResource SecondaryBackground}"
+                                                         Foreground="{StaticResource TextPrimary}"
+                                                         BorderBrush="{StaticResource BorderBrush}"
+                                                         BorderThickness="1"
+                                                         Padding="12"
+                                                         FontSize="13"
+                                                         IsReadOnly="True"
+                                                         IsEnabled="False"
+                                                         VerticalContentAlignment="Center"/>
+                                                
+                                                <Button x:Name="BrowseProxyButton"
+                                                        Grid.Column="2"
+                                                        Content="Browse"
+                                                        Click="BrowseProxyFile_Click"
+                                                        Style="{StaticResource ModernButton}"
+                                                        Padding="20,10"
+                                                        IsEnabled="False"/>
+                                            </Grid>
+                                            
+                                            <StackPanel x:Name="ProxyStatsPanel" Orientation="Horizontal" Margin="0,10,0,0" Visibility="Collapsed">
+                                                <TextBlock Text="Loaded Proxies: " 
+                                                           Foreground="{StaticResource TextSecondary}"
+                                                           FontSize="12"/>
+                                                <TextBlock x:Name="ProxyCountText"
+                                                           Text="0" 
+                                                           Foreground="{StaticResource TextPrimary}"
+                                                           FontSize="12"
+                                                           FontWeight="Bold"/>
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Grid>
+                    </TabItem>
+                    
+                    <!-- About Tab -->
+                    <TabItem Header="About" Style="{StaticResource ModernTabItem}">
+                        <Grid x:Name="AboutContent" 
+                              Opacity="0"
+                              RenderTransformOrigin="0.5,0.5">
+                            <Grid.RenderTransform>
+                                <TranslateTransform Y="20"/>
+                            </Grid.RenderTransform>
+                            
+                            <ScrollViewer Style="{StaticResource ModernScrollViewer}" VerticalScrollBarVisibility="Auto">
+                                <StackPanel Margin="0,20" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="600">
+                                    <Border Style="{StaticResource ModernCard}" Margin="0,100,0,0">
+                                        <StackPanel HorizontalAlignment="Center">
+                                            <Border Style="{StaticResource IconCircle}" 
+                                                    Width="80" Height="80" 
+                                                    HorizontalAlignment="Center"
+                                                    Margin="0,0,0,30">
+                                                <TextBlock Text="⬤" FontSize="32" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </Border>
+                                            
+                                            <TextBlock Text="ACCOUNT CHECKER" 
+                                                       FontSize="28" 
+                                                       FontWeight="Bold" 
+                                                       Foreground="{StaticResource TextPrimary}"
+                                                       HorizontalAlignment="Center"
+                                                       Margin="0,0,0,15"/>
+                                            
+                                            <TextBlock Text="Version 1.0.0" 
+                                                       FontSize="14" 
+                                                       Foreground="{StaticResource TextSecondary}"
+                                                       HorizontalAlignment="Center"
+                                                       Margin="0,0,0,30"/>
+                                            
+                                            <TextBlock Text="Made by Heroin1337" 
+                                                       FontSize="14" 
+                                                       Foreground="{StaticResource TextSecondary}"
+                                                       HorizontalAlignment="Center"
+                                                       TextAlignment="Center"
+                                                       Margin="0,0,0,10"/>
+                                        </StackPanel>
+                                    </Border>
+                                </StackPanel>
+                            </ScrollViewer>
+                        </Grid>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
