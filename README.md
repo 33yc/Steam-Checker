@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://github.com/heroin1337/Steam-Checker">
+  <a href="https://github.com/33yc/Steam-Checker">
     <img src="https://i.postimg.cc/nLXVx5Cr/icon.png" alt="Steam Checker Logo" width="150" height="150">
   </a>
   <h3 align="center">Steam Checker</h3>
@@ -7,9 +7,9 @@
     An Advanced Multi-Threaded Steam Account Checker
     <br />
     <br />
-    <a href="https://github.com/heroin1337/Steam-Checker/issues">Report a Bug</a> ·
-    <a href="https://github.com/heroin1337/Steam-Checker/issues">Request a Feature</a> ·
-    <a href="https://github.com/heroin1337/Steam-Checker/pulls">Submit a Pull Request</a>
+    <a href="https://github.com/33yc/Steam-Checker/issues">Report a Bug</a> ·
+    <a href="https://github.com/33yc/Steam-Checker/issues">Request a Feature</a> ·
+    <a href="https://github.com/33yc/Steam-Checker/pulls">Submit a Pull Request</a>
   </p>
 </p>
 
