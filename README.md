@@ -16,7 +16,7 @@
 ## Features
 
 ```batch
-┌──(heroin@root)-[~/]
+┌──(33yc@root)-[~/]
 └─$ cat Steam-Checker
 
 @Program
@@ -42,7 +42,7 @@
 
 1. **Clone the Repo**:
    ```bash
-   git clone https://github.com/heroin1337/Steam-Checker.git
+   git clone https://github.com/33yc/Steam-Checker.git
 
 2. **Open the `AccountChecker.csproj` file** in Visual Studio.
 
@@ -57,7 +57,7 @@
 
 If you don't want to build the project yourself, you can download the pre-built version directly from GitHub:
 
-1. Go to the **[Releases page](https://github.com/heroin1337/Steam-Checker/tags)**.
+1. Go to the **[Releases page](https://github.com/33yc/Steam-Checker/tags)**.
 
 2. Download the latest release for your platform.
 
